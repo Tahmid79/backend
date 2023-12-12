@@ -8,5 +8,6 @@ import { ContactSchema } from './entities/contact.entity';
   imports: [MongooseModule.forFeature([{ name: 'Contact', schema: ContactSchema }])],
   controllers: [ContactController],
   providers: [ContactService],
+  exports: [ContactService]
 })
 export class ContactModule {}

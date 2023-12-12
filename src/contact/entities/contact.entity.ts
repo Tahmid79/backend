@@ -10,6 +10,15 @@ export class Contact extends Document {
 
     @Prop()
     phone: string;
+
+    @Prop()
+    email: string;
+
+    @Prop()
+    password: string;
+
+    @Prop()
+    refreshToken: string;
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact)
