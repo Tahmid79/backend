@@ -18,7 +18,7 @@ export class AuthService {
         newUser['password'] = hashedPassword;
         const createdUser = await this.contactService.create(newUser);
         const tokens = await this.createTokens(createdUser._id, createdUser.email);
-        await this.updateRefreshToken(createdUser['_id'], createdUser.email);
+        await this.updateRefreshToken(createdUser['_id'], tokens.refreshToken);
         return tokens;
     }
 
@@ -31,7 +31,7 @@ export class AuthService {
         if(!paswordMatches) throw new UnauthorizedException("Incorrect password");  
         
         const tokens = await this.createTokens(user._id, user.email);
-        await this.updateRefreshToken(user['_id'], user.email);
+        await this.updateRefreshToken(user['_id'], tokens.refreshToken);
         return tokens;
     }
 
@@ -73,8 +73,8 @@ export class AuthService {
         }
         const refreshTokenMatches = await argon2.verify(contact.refreshToken, refreshToken);
         if(!refreshTokenMatches)throw new ForbiddenException("Access Denied");
-        const tokens = this.createTokens(id, contact.email);
-        await this.updateRefreshToken(id, contact.email);
+        const tokens = await this.createTokens(id, contact.email);
+        await this.updateRefreshToken(id, tokens.refreshToken);
         return tokens;
     }
 

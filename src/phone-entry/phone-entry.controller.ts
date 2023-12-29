@@ -1,20 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { PhoneEntryService } from './phone-entry.service';
 import { CreatePhoneEntryDto } from './dto/create-phone-entry.dto';
 import { UpdatePhoneEntryDto } from './dto/update-phone-entry.dto';
+import { AccessTokenGuard } from '../common/guards/accessToken.guard';
+import { Request } from 'express';
 
 @Controller('phone-entry')
 export class PhoneEntryController {
   constructor(private readonly phoneEntryService: PhoneEntryService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Post()
-  create(@Body() createPhoneEntryDto: CreatePhoneEntryDto) {
-    return this.phoneEntryService.create(createPhoneEntryDto);
+  create(@Req() req: Request, @Body() createPhoneEntryDto: CreatePhoneEntryDto) {
+    const userId = req.user['sub'] ;
+    return this.phoneEntryService.create(createPhoneEntryDto, userId);
   }
-
+  
+  @UseGuards(AccessTokenGuard)
   @Get()
-  findAll() {
-    return this.phoneEntryService.findAll();
+  findAll(@Req() req: Request) {
+    const userId = req.user['sub'] ;
+    return this.phoneEntryService.findAll(userId);
   }
 
   @Get(':id')

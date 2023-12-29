@@ -13,7 +13,7 @@ export class ContactController {
     return this.contactService.create(createContactDto, true);
   }
   
-  // @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard)
   @Get()
   findAll() {
     return this.contactService.findAll();
