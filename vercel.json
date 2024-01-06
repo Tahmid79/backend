@@ -1,8 +1,5 @@
 {
     "version": 2,
-    "env": {
-        "DB_URI": "@mongo_uri"
-    },
     "builds": [
         {
             "src": "src/main.ts",
